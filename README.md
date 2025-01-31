@@ -6,3 +6,5 @@ Apologies if my code isn't the best, I'm kind of new to C++, and I've only been 
 Deps: CLI11
 
 If in using this you have any issues or suggestions, let me know!
+
+Compiled using G++, which is recommended for building and running this project
