@@ -89,6 +89,7 @@ int main(int argc, char** argv){
 
     if (vm.count("--rf")){
         std::string fn = vm["--rf"]->as<std::string>();
+        run(loadFromFile(fn), false);
     } else if (vm.count("--d")){
         std::string fn = vm["--d"]->as<std::string>();
         run(loadFromFile(fn), true);
