@@ -514,6 +514,28 @@ namespace bakeapple_isa {
             sy.strg=1;
             return 0;
         }},
+        {"DEL", [](std::string dest="", std::string val="", label *c=nullptr, std::vector<label> *cc=nullptr){
+            // DEL [register] [redundant] : Deletes the value of the given variable
+            if (!regconv.count(dest)){
+                throw bakeapple_err::invalidRegisterError();
+            }
+            reg *r = regconv[dest];
+            switch (r->type) {
+                case !string:
+                    r->type=nil;
+                    r->strg=0;
+                    break;
+
+                case string:
+                    std::string *rt = reinterpret_cast<std::string*>(r->strg);
+                    delete(rt);
+                    r->strg=0;
+                    r->type=nil;
+                    break;
+            }
+            sy.strg=1;
+            return 0;
+        }},
         {"CMP", [](std::string dest="", std::string val="", label *c=nullptr, std::vector<label> *cc=nullptr){
             // CMP [value 1] [value 2] : Compares two values, storing the return value in sy, 1 or 0 depending on if they are equal
             if (regconv.count(dest)){
@@ -541,6 +563,9 @@ namespace bakeapple_isa {
         }},
         {"CMG", [](std::string dest="", std::string val="", label *c=nullptr, std::vector<label> *cc=nullptr){
             // CMG [value 1] [value 2] : Compares two values, storing the return value in sy, 1 or 0 depending on if value 1 is greater than value 2, numeric operation
+            if (regconv.count(dest)){
+                dest=std::to_string(regconv[dest]->strg);
+            }
             if (std::stoi(dest)>std::stoi(val)){
                 sy.strg=1;
             } else {
@@ -550,6 +575,9 @@ namespace bakeapple_isa {
         }},
         {"CGE", [](std::string dest="", std::string val="", label *c=nullptr, std::vector<label> *cc=nullptr){
             // CGE [value 1] [value 2] : Compares two values, storing the return value in sy, 1 or 0 depending on if value 1 is greater than or equal to value 2, numeric operation
+            if (regconv.count(dest)){
+                dest=std::to_string(regconv[dest]->strg);
+            }
             if (std::stoi(dest)>=std::stoi(val)){
                 sy.strg=1;
             } else {
@@ -559,6 +587,9 @@ namespace bakeapple_isa {
         }},
         {"CLE", [](std::string dest="", std::string val="", label *c=nullptr, std::vector<label> *cc=nullptr){
             // CLE [value 1] [value 2] : Compares two values, storing the return value in sy, 1 or 0 depending on if value 1 is less than or equal to value 2, numeric operation
+            if (regconv.count(dest)){
+                dest=std::to_string(regconv[dest]->strg);
+            }
             if (std::stoi(dest)<=std::stoi(val)){
                 sy.strg=1;
             } else {
@@ -568,6 +599,9 @@ namespace bakeapple_isa {
         }}, 
         {"CML", [](std::string dest="", std::string val="", label *c=nullptr, std::vector<label> *cc=nullptr){
             // CML [value 1] [value 2] : Compares two values, storing the return value in sy, 1 or 0 depending on if value 1 is less than value 2, numeric operation
+            if (regconv.count(dest)){
+                dest=std::to_string(regconv[dest]->strg);
+            }
             if (std::stoi(dest)<std::stoi(val)){
                 sy.strg=1;
             } else {
